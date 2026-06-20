@@ -1,10 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Timer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KowaOne Timer</title>
 
 <script src="https://cdn.discordapp.com/embedded-app-sdk/index.js"></script>
 
 <style>
-...
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#0b0b0f;
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.container{
+  text-align:center;
+}
+
+#display{
+  font-size:120px;
+  font-weight:700;
+  letter-spacing:-4px;
+  transition:all .25s ease;
+  margin-bottom:40px;
+}
+
+.buttons{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+button{
+  background:transparent;
+  color:white;
+  border:1px solid rgba(255,255,255,.15);
+  padding:14px 22px;
+  border-radius:14px;
+  cursor:pointer;
+  font-size:16px;
+  transition:.2s;
+}
+
+button:hover{
+  background:rgba(255,255,255,.08);
+}
+
+button:active{
+  transform:scale(.96);
+}
 </style>
 </head>
+
+<body>
+
+<div class="container">
+
+<div id="display">25:00</div>
+
+<div class="buttons">
+<button onclick="startTimer(25)">25分</button>
+<button onclick="startTimer(30)">30分</button>
+<button onclick="stopTimer()">停止</button>
+</div>
+
+</div>
+
+<script>
+let timer;
+let remaining = 1500;
+
+function updateDisplay() {
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+
+  document.getElementById("display").innerText =
+    `${m}:${String(s).padStart(2,"0")}`;
+}
+
+function startTimer(minutes){
+  clearInterval(timer);
+
+  remaining = minutes * 60;
+  updateDisplay();
+
+  timer = setInterval(() => {
+
+    remaining--;
+
+    updateDisplay();
+
+    if(remaining <= 0){
+      clearInterval(timer);
+      document.getElementById("display").innerText = "DONE";
+    }
+
+  },1000);
+}
+
+function stopTimer(){
+  clearInterval(timer);
+}
+
+window.addEventListener("load", async () => {
+  try{
+    console.log("ページ読み込み完了");
+
+    if(window.DiscordSDK){
+      console.log("Discord SDK 読み込み成功");
+    }else{
+      console.log("Discord SDK 未検出");
+    }
+
+  }catch(err){
+    console.error(err);
+  }
+});
+
+updateDisplay();
+</script>
+
+</body>
+</html>
