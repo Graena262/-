@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Timer</title>
+<style>
+body{
+  background:#0b0b0f;
+  color:#fff;
+  font-family:sans-serif;
+  height:100vh;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+#display{
+  font-size:90px;
+  margin:30px;
+  transition:opacity .2s;
+}
+button{
+  margin:10px;
+  padding:10px 18px;
+  background:transparent;
+  color:white;
+  border:1px solid #ffffff33;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="display">00:00</div>
+
+<button onclick="start(25)">25分</button>
+<button onclick="start(30)">30分</button>
+
+<script>
+let t;
+
+function start(min){
+  clearInterval(t);
+  let time=min*60;
+  let d=document.getElementById("display");
+
+  t=setInterval(()=>{
+    let m=Math.floor(time/60);
+    let s=time%60;
+
+    d.style.opacity=0.3;
+
+    setTimeout(()=>{
+      d.innerText=`${m}:${s.toString().padStart(2,'0')}`;
+      d.style.opacity=1;
+    },100);
+
+    if(time<=0){
+      clearInterval(t);
+      d.innerText="DONE";
+    }
+
+    time--;
+  },1000);
+}
+</script>
+
+</body>
+</html>
